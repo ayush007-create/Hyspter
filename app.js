@@ -8,123 +8,183 @@ const songs = [
     id: 5,
     songName:"2002",
     subtitle:"Annie Marie",
-    poster:"img/2002.jpeg",
+    poster:"img/5.jpeg",
   },
   {
     id: 18,
     songName:"Namo Namo",
     subtitle:"Amit Trivedi",
-    poster:"img/namonamo.jpeg",
+    poster:"img/18.jpeg",
   },
   {
     id: 4,
     songName:"Bones",
     subtitle:"Imaagine Dragons",
-    poster:"img/bones.jpeg",
+    poster:"img/4.jpeg",
   },
   {
     id: 15,
     songName:"Illegal Weapon",
     subtitle:"Garry Sandhu",
-    poster:"img/illegalweapon.jpeg",
+    poster:"img/15.jpeg",
   },
   {
     id: 6,
     songName:"Softly",
     subtitle:"Karan Aujla",
-    poster:"img/softly.jpeg",
+    poster:"img/6.jpeg",
   },
   {
     id: 17,
     songName:"Shape Of You",
     subtitle:"Ed Sheeran",
-    poster:"img/shape of you.jpeg",
+    poster:"img/17.jpeg",
   },
   {
     id: 10,
     songName:"Saiyyan",
     subtitle:"Vyom",
-    poster:"img/saiyyan.jpeg",
+    poster:"img/10.jpeg",
   },
   {
     id: 9,
     songName:"The Nights",
     subtitle:"Avcii",
-    poster:"img/thenights.jpeg",
+    poster:"img/9.jpeg",
   },
   {
     id: 8,
     songName:"Putt Jatt Da",
     subtitle:"Diljit Singh",
-    poster:"img/puttjatda.jpeg",
+    poster:"img/8.jpeg",
   },
   {
     id: 19,
     songName:"Punja Daab",
     subtitle:"Parmish Verma",
-    poster:"img/punjadaab.jpeg",
+    poster:"img/19.jpeg",
   },
   {
     id: 1,
     songName:"Marry On A Cross",
     subtitle:"Mukesh Ambani",
-    poster:"img/marryonacross.jpeg",
+    poster:"img/1.jpeg",
   },
   {
     id: 16,
     songName:"Kaleshi Chori",
     subtitle:"DG Immortals",
-    poster:"img/kaleshichori.jpeg",
+    poster:"img/16.jpeg",
   },
   {
     id: 12,
     songName:"Ex-Calling",
     subtitle:"Rohan Preet Singh",
-    poster:"img/excalling.jpeg",
+    poster:"img/12.jpeg",
   },
   {
     id: 3,
     songName:"Closer",
     subtitle:"The Chainsmokers",
-    poster:"img/closer.jpeg",
+    poster:"img/3.jpeg",
   },
   {
     id: 13,
     songName:"Dil Jhoom",
     subtitle:"Neha Kakkar",
-    poster:"img/diljhoom.jpeg",
+    poster:"img/13.jpeg",
   },
   {
     id: 14,
     songName:"Dior",
     subtitle:"Shubh",
-    poster:"img/dior.jpeg",
+    poster:"img/14.jpeg",
   },
   {
     id: 2,
     songName:"Faded",
     subtitle:"Alan Walker",
-    poster:"img/faded.jpeg",
+    poster:"img/2.jpeg",
   },
   {
     id: 20,
     songName:"One Love",
     subtitle:"Shubh",
-    poster:"img/onelove.jpeg",
+    poster:"img/20.jpeg",
   },
   {
     id: 7,
     songName:"Sone Diya Walliyan",
     subtitle:"Guri",
-    poster:"img/sonediyawalliyan.jpeg",
+    poster:"img/7.jpeg",
   },
   {
     id: 11,
     songName:"Thaa",
     subtitle:"Varindra Brar",
-    poster:"img/thaa.jpeg",
+    poster:"img/11.jpeg",
   }
 ];
+let search_results = document.getElementsByClassName('search_box')[0];
+songs.forEach((element)=>{
+  let card = document.createElement('a');
+  card.classList.add('card');
+  card.innerHTML=`
+    <img src=${element.poster} alt="">
+    <div class="content">
+        ${element.songName}
+        <div class="subtitle">
+            ${element.subtitle}
+        </div>
+    </div>
+    <i class="butt bi bi-play-circle-fill" id=${element.id}></i>
+  `
+  search_results.appendChild(card)
+})
+let input = document.getElementById('searchbar');
+input.addEventListener('keyup',()=>{
+  let input_value = input.value.toUpperCase();
+  let items = search_results.getElementsByTagName('a');
+  let playbut = search_results.getElementsByTagName('i');
+
+  for (let i = 0; i < items.length; i++) {
+    let as = items[i].getElementsByClassName('content')[0];
+    let text_value = as.textContent || as.innerHTML;
+    if(text_value.toUpperCase().indexOf(input_value)>-1){
+      console.log(true)
+      items[i].style.display = "flex";
+    }
+    else{
+      items[i].style.display = "none";
+    }
+    if(input_value == 0){
+      items[i].style.display = "none";
+    }
+  }
+  for (let i = 0; i < playbut.length; i++) {
+    playbut[i].addEventListener('click',(el)=>{
+      index = el.target.id;
+      music.src=`Music/${index}.mp3`;
+      poster.src = `img/${index}.jpeg`;
+      download.href = `Music/${index}.mp3`
+      songs.forEach((element)=>{
+       if(index == element.id){
+         songplayingname.innerHTML=element.songName
+         singer.innerHTML=element.subtitle
+         download.download=element.songName
+       }
+      })
+      music.play();
+      wave.classList.remove('active1')
+      wave.classList.toggle('active1')
+      masterplay.classList.remove('bi-play-fill')
+      masterplay.classList.add('bi-pause-fill')
+      makeallbg();
+      Array.from(document.getElementsByClassName('songitem'))[index-1].style.background="rgb(105,105,105,.1)"
+    })
+  }
+
+})
 const makeallbg = ()=>{
   Array.from(document.getElementsByClassName('songitem')).forEach((elu)=>{
     elu.style.background = 'rgb(105,105,105,.0)'
